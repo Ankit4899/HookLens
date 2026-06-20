@@ -30,24 +30,11 @@ export async function register(req, res) {
         password: hashedPassword
     })
 
-    const otp = generateOtp();
-    const html = getOtpHtml(otp);
-
-    const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
-    await otpModel.create({
-        email,
-        user: user._id,
-        otpHash
-    })
-
-    await sendEmail(email, "OTP Verification", `Your OTP code is ${otp}`, html)
-
     res.status(201).json({
         message: "User registered successfully",
         user: {
             username: user.username,
-            email: user.email,
-            verified: user.verified
+            email: user.email
         },
     })
 
@@ -65,11 +52,6 @@ export async function login(req, res) {
         })
     }
 
-    if (!user.verified) {
-        return res.status(401).json({
-            message: "Email not verified"
-        })
-    }
 
     const hashedPassword = crypto.createHash("sha256").update(password).digest("hex");
 
