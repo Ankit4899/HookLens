@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import sessionModel from "../models/session.model.js";
 
-
+ /**
+  * Register controller
+  */
 export async function register(req, res) {
 
     const { username, email, password } = req.body;
@@ -40,6 +42,10 @@ export async function register(req, res) {
 
 
 }
+
+/**
+ * Login controller
+ */
 
 export async function login(req, res) {
     const { email, password } = req.body;
@@ -106,6 +112,9 @@ export async function login(req, res) {
     })
 }
 
+/**
+ * Getting user
+ */
 export async function getMe(req, res) {
 
     const token = req.headers.authorization?.split(" ")[ 1 ];
@@ -129,6 +138,10 @@ export async function getMe(req, res) {
     })
 
 }
+
+/**
+ * Refreshing token
+ */
 
 export async function refreshToken(req, res) {
     const refreshToken = req.cookies.refreshToken;
@@ -188,6 +201,10 @@ export async function refreshToken(req, res) {
         accessToken
     })
 }
+
+/**
+ * Logout controller
+ */
 
 export async function logout(req, res) {
 
