@@ -20,6 +20,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import endpointRouter from "./routes/endpoint.routes.js";
 
 import authRouter from "./routes/auth.routes.js";
 
@@ -37,5 +38,6 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use("/api/auth", authRouter);
+app.use("/api/endpoints", endpointRouter);
 
 export default app;
