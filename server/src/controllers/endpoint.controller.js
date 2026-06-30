@@ -33,3 +33,24 @@ export async function createEndpoint(req, res) {
         });
     }
 }
+
+export async function getAllEndpoints(req, res) {
+    try {
+        const endpoints = await endpointModel
+            .find({ user: req.user.id })
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: endpoints.length,
+            endpoints,
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch endpoints",
+        });
+    }
+}
