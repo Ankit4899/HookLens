@@ -32,13 +32,13 @@ authRouter.get("/refresh-token", authController.refreshToken)
 
 
 /**
- * GET /api/auth/logout
+ * POST /api/auth/logout
  */
 authRouter.post("/logout", authController.logout)
 
 
 /**
- * GET /api/auth/logout-all
+ * post /api/auth/logout-all
  */
 authRouter.post("/logout-all", authController.logoutAll)
 

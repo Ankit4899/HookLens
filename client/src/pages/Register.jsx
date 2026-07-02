@@ -1,5 +1,84 @@
+// // import { useState } from "react";
+// // import { useNavigate ,Link} from "react-router-dom";
+// // import { useAuth } from "../context/AuthContext";
+
+// // function Register() {
+// //   const { register } = useAuth();
+// //   const navigate = useNavigate();
+
+// //   const [formData, setFormData] = useState({
+// //     name: "",
+// //     email: "",
+// //     password: "",
+// //   });
+
+// //   const handleChange = (e) => {
+// //     setFormData({
+// //       ...formData,
+// //       [e.target.name]: e.target.value,
+// //     });
+// //   };
+
+// //   const handleSubmit = (e) => {
+// //     e.preventDefault();
+
+// //     register(
+// //       formData.name,
+// //       formData.email,
+// //       formData.password
+// //     );
+
+// //     navigate("/login");
+// //   };
+
+// //   return (
+// //     <>
+// //     <form onSubmit={handleSubmit}>
+// //       <h2>Register</h2>
+
+// //       <input
+// //         type="text"
+// //         name="name"
+// //         placeholder="Name"
+// //         value={formData.name}
+// //         onChange={handleChange}
+// //       />
+
+// //       <br /><br />
+
+// //       <input
+// //         type="email"
+// //         name="email"
+// //         placeholder="Email"
+// //         value={formData.email}
+// //         onChange={handleChange}
+// //       />
+
+// //       <br /><br />
+
+// //       <input
+// //         type="password"
+// //         name="password"
+// //         placeholder="Password"
+// //         value={formData.password}
+// //         onChange={handleChange}
+// //       />
+
+// //       <br /><br />
+
+// //       <button>Register</button>
+// //     </form>
+// //       <p>
+// //         Already registered? <Link to="/login">Login</Link>
+// //       </p>
+// //     </>
+// //   );
+// // }
+
+// // export default Register;/
+
 // import { useState } from "react";
-// import { useNavigate ,Link} from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 // import { useAuth } from "../context/AuthContext";
 
 // function Register() {
@@ -7,7 +86,7 @@
 //   const navigate = useNavigate();
 
 //   const [formData, setFormData] = useState({
-//     name: "",
+//     username: "",
 //     email: "",
 //     password: "",
 //   });
@@ -19,55 +98,62 @@
 //     });
 //   };
 
-//   const handleSubmit = (e) => {
+//   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
-//     register(
-//       formData.name,
-//       formData.email,
-//       formData.password
-//     );
-
-//     navigate("/login");
+//     try {
+//       await register(formData);
+//       navigate("/login");
+//     } catch (error) {
+//       console.error(error);
+//       alert(error.response?.data?.message || "Registration failed");
+//     }
 //   };
 
 //   return (
 //     <>
-//     <form onSubmit={handleSubmit}>
-//       <h2>Register</h2>
+//       <form onSubmit={handleSubmit}>
+//         <h2>Register</h2>
 
-//       <input
-//         type="text"
-//         name="name"
-//         placeholder="Name"
-//         value={formData.name}
-//         onChange={handleChange}
-//       />
+//         <input
+//           type="text"
+//           name="username"
+//           placeholder="Username"
+//           value={formData.username}
+//           onChange={handleChange}
+//           required
+//         />
 
-//       <br /><br />
+//         <br />
+//         <br />
 
-//       <input
-//         type="email"
-//         name="email"
-//         placeholder="Email"
-//         value={formData.email}
-//         onChange={handleChange}
-//       />
+//         <input
+//           type="email"
+//           name="email"
+//           placeholder="Email"
+//           value={formData.email}
+//           onChange={handleChange}
+//           required
+//         />
 
-//       <br /><br />
+//         <br />
+//         <br />
 
-//       <input
-//         type="password"
-//         name="password"
-//         placeholder="Password"
-//         value={formData.password}
-//         onChange={handleChange}
-//       />
+//         <input
+//           type="password"
+//           name="password"
+//           placeholder="Password"
+//           value={formData.password}
+//           onChange={handleChange}
+//           required
+//         />
 
-//       <br /><br />
+//         <br />
+//         <br />
 
-//       <button>Register</button>
-//     </form>
+//         <button type="submit">Register</button>
+//       </form>
+
 //       <p>
 //         Already registered? <Link to="/login">Login</Link>
 //       </p>
@@ -75,7 +161,7 @@
 //   );
 // }
 
-// export default Register;/
+// export default Register;
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -102,11 +188,17 @@ function Register() {
     e.preventDefault();
 
     try {
-      await register(formData);
+      await register(
+        formData.username,
+        formData.email,
+        formData.password
+      );
+
+      alert("Registration Successful");
+
       navigate("/login");
-    } catch (error) {
-      console.error(error);
-      alert(error.response?.data?.message || "Registration failed");
+    } catch (err) {
+      alert(err.response?.data?.message || "Registration Failed");
     }
   };
 
@@ -155,7 +247,7 @@ function Register() {
       </form>
 
       <p>
-        Already registered? <Link to="/login">Login</Link>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </>
   );

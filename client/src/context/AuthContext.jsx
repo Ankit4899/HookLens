@@ -1,4 +1,5 @@
 // import { createContext, useContext, useState } from "react";
+// import api from "../api/axios";
 
 // const AuthContext = createContext();
 
@@ -8,31 +9,36 @@
 //   );
 
 //   // Register
-//   const register = (name, email, password) => {
-//     const newUser = { name, email, password };
+//   const register = async (formData) => {
+//     const res = await api.post("/auth/register", formData);
 
-//     localStorage.setItem("user", JSON.stringify(newUser));
-//     setUser(newUser);
+//     return res.data;
 //   };
 
 //   // Login
-//   const login = (email, password) => {
-//     const storedUser = JSON.parse(localStorage.getItem("user"));
+//   const login = async (email, password) => {
+//     const res = await api.post("/auth/login", {
+//       email,
+//       password,
+//     });
 
-//     if (
-//       storedUser &&
-//       storedUser.email === email &&
-//       storedUser.password === password
-//     ) {
-//       setUser(storedUser);
-//       return true;
-//     }
+//     const { user, accessToken } = res.data;
 
-//     return false;
+//     localStorage.setItem("user", JSON.stringify(user));
+//     localStorage.setItem("accessToken", accessToken);
+
+//     setUser(user);
+
+//     return true;
 //   };
 
 //   // Logout
-//   const logout = () => {
+//   const logout = async () => {
+//     await api.post("/auth/logout");
+
+//     localStorage.removeItem("user");
+//     localStorage.removeItem("accessToken");
+
 //     setUser(null);
 //   };
 
@@ -65,8 +71,12 @@ export const AuthProvider = ({ children }) => {
   );
 
   // Register
-  const register = async (formData) => {
-    const res = await api.post("/auth/register", formData);
+  const register = async (username, email, password) => {
+    const res = await api.post("/auth/register", {
+      username,
+      email,
+      password,
+    });
 
     return res.data;
   };
@@ -90,12 +100,17 @@ export const AuthProvider = ({ children }) => {
 
   // Logout
   const logout = async () => {
-    await api.post("/auth/logout");
+    try {
+      // Change to GET because your backend uses GET
+      await api.post("/auth/logout");
 
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
 
-    setUser(null);
+      setUser(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -112,6 +127,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
